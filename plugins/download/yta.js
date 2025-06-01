@@ -8,9 +8,9 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 		let anu = await (await fetch('https://api.siputzx.my.id/api/d/ytmp3?url='+args[0])).json()
 		if (anu.error) {
 			let anu = await (await fetch('https://api.siputzx.my.id/api/dl/youtube/mp3?url='+args[0])).json()
-			if (!anu.error) await conn.sendFile(m.chat, anu.data, 'unnamed.mp3', '', m)
+			if (!anu.error) await conn.sendFile(m.chat, anu.data, 'unnamed.mp3', '', m, false, { mimetype: 'audio/mpeg' })
 			else m.reply(anu.error)
-		} else await conn.sendFile(m.chat, anu.data.dl, anu.data.title+'.mp3', '', m)
+		} else await conn.sendFile(m.chat, anu.data.dl, anu.data.title+'.mp3', '', m, false, { mimetype: 'audio/mpeg' })
 	} catch (e) {
 		console.log(e)
 		m.reply(e.message)

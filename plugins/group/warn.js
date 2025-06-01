@@ -23,15 +23,16 @@ let handler = async (m, { conn, command, text, isOwner, isAdmin, isBotAdmin, par
 	let txt = `*user:* @${split}\n*warn:* (${usr.count}/3)${usr.alasan ? `\n*alasan:* ${usr.alasan}` : ''}`
 	if (!/cek/.test(command)) {
 		if (!isAdmin) return m.reply(`*「ADMIN GROUP ONLY」*`)
+		let count = usr.count
 		if (/del|un/.test(command)) {
-			if (usr.count > 0) usr.count -= 1
+			if (usr.count > 0) usr.count -= count
 		} else {
 			if (usr.count < 3) usr.count += 1
 			usr.alasan = remM(text || '')
 		}
 		let par = participants.find(v => v.id == user)
 		par = par?.admin || ''
-		txt = `${/del|un/.test(command) ? '*warn berkurang -1*' : /admin/.test(par) ? '*bisa-bisanya atmin kena warn* 🥴' : '*warn bertambah +1*'}\n\n*user:* @${split}\n*warn:* (${usr.count}/3)${usr.alasan ? `\n*alasan:* ${usr.alasan}` : ''}${usr.count >= 3 ? `\n\n⛔ user mencapai batas peringatan, ${isBotAdmin ? `akan segera dieksekusi.` : `tidak dapat meng-kick karena bot bukan atmin.`}` : ''}`
+		txt = `${/del|un/.test(command) ? `*warn berkurang -${count}*` : /admin/.test(par) ? '*bisa-bisanya atmin kena warn* 🥴' : '*warn bertambah +1*'}\n\n*user:* @${split}\n*warn:* (${usr.count}/3)${usr.alasan ? `\n*alasan:* ${usr.alasan}` : ''}${usr.count >= 3 ? `\n\n⛔ user mencapai batas peringatan, ${isBotAdmin ? `akan segera dieksekusi.` : `tidak dapat meng-kick karena bot bukan atmin.`}` : ''}`
 	}
 	await conn.sendMsg(m.chat, { text: txt, mentions: conn.parseMention(txt) }, { quoted: m })
 	if (isBotAdmin && usr.count >= 3) {

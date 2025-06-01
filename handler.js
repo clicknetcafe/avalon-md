@@ -535,7 +535,9 @@ export async function handler(chatUpdate) {
 					if (!isNumber(chat.mutecd)) chat.mutecd = 0
 					if (!isNumber(chat.spamcount)) chat.spamcount = 0
 					if (!('warn' in chat)) chat.warn = {}
+					if (!('tagcount' in chat)) chat.tagcount = {}
 					if (!('pinmsg' in chat)) chat.pinmsg = {}
+					if (!('giveaway' in chat)) chat.giveaway = {}
 				} else db.data.chats[m.chat] = {
 					presence: false,
 					isBanned: false,
@@ -575,7 +577,9 @@ export async function handler(chatUpdate) {
 					mutecd: 0,
 					spamcount: 0,
 					warn: {},
+					tagcount: {},
 					pinmsg: {},
+					giveaway: {},
 				}
 				let akinator = db.data.chats[m.chat].akinator
 				if (typeof akinator !== 'object')

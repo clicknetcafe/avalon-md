@@ -14,10 +14,13 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 		if (x.announce && !x.participants.find(v => v.id == conn.user.jid).admin) console.log(x.id+'\ngroup closed / bot not admin')
 		else {
 			try {
-				if (db.data.chats[x.id].owneronly) continue
+				if (db.data.chats[x.id]?.owneronly) continue
 				let msg, tag = /tag/.test(command) ? x.participants.map(v => v.id) : []
 				if (/image|video/g.test(mime) && !/webp/.test(mime)) msg = await conn.sendMsg(x.id, { [/image/.test(mime) ? 'image' : 'video']: img, caption: teks, mentions: tag }, { quoted: fkontakbot })
-				else if (/audio/.test(mime)) msg = await conn.sendFAudio(x.id, { audio: img, mimetype: 'audio/mpeg', ptt: true }, fkontakbot, text || pauthor, thumb, db.data.datas.linkgc)
+				else if (/audio/.test(mime)) {
+					msg = await conn.sendFile(x.id, img, 'unnamed.mp3', '', fkontakbot, false, { mimetype: 'audio/mpeg' })
+					if (teks) await conn.reply(x.id, teks, msg)	
+				}
 				else msg = await conn.reply(x.id, teks, fkontakbot, { mentions: tag })
 				if (/pin/.test(command)) await conn.sendMsg(x.id, { pin: msg.key, type: proto.PinInChat.Type.PIN_FOR_ALL, time: 86400})
 				await delay(ranNumb(2000, 5500))

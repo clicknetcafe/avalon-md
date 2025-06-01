@@ -24,12 +24,6 @@ This is Script of WhatsApp multi device, working with [`baileys`](https://github
 [![Grup WhatsApp](https://img.shields.io/badge/WhatsApp%20Group-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://cutt.ly/avalon-wa)
 **MAX BOT : 4**
 
-## First, update proto to make antitagsw work
-save this file [proto.js](https://pastebin.com/CxGB8Fma), then execute
-```bash
-node proto.js
-```
-
 ## Run
 
 ```bash
@@ -39,13 +33,7 @@ node .
 ---------
 
 ## Arguments `node . [--options] [<session name>]`
-### `Contoh: node . --pairing`
-
-### `--pairing`
-Link device via pairing
-
-### `--mobile`
-Link device via mobile captcha (blm tes, rawan ban katanya)
+### `Contoh: node . --self`
 
 ### `--self`
 Mode self (gak ada yang bisa gunakan, kecuali nomor bot dan owner)
