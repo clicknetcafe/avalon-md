@@ -27,29 +27,23 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 	} else url = text
 	if (!url) return
 	try {
-		let anu = await ytdl2(url);
-		if (!anu.status) throw Error(anu.msg)
-		anu = anu.data
-		await conn.sendFAudio(m.chat, { [/mp3/g.test(command) ? 'document' : 'audio']: { url: anu.audio }, mimetype: 'audio/mpeg', fileName: `${anu.title}.mp3` }, m, anu.title, anu.thumb, url)
+		let anu = await (await fetch(`https://fastrestapis.fasturl.cloud/downup/ytmp3?url=${url}&quality=128kbps&server=auto`)).json()
+		if (anu.status == 200) {
+			anu = anu.result
+			let txt = `*${anu.title}*\n\n⭔ Author : ${anu.author.name}\n⭔ Duration : ${anu.metadata.duration}\n⭔ Quality : ${anu.quality}`
+			let msg = await conn.sendFile(m.chat, anu.media, anu.title+'.mp3', '', m, false, { mimetype: 'audio/mpeg' })
+			await conn.reply(m.chat, txt, msg)
+		} else throw Error(anu.error)
 	} catch (e) {
 		console.log(e)
 		try {
-			/*const anu = await ytdl(url);
-			let aud = anu.resultUrl.audio[0]
-			await conn.sendFAudio(m.chat, { [/mp3/g.test(command) ? 'document' : 'audio']: { url: await aud.download() }, mimetype: 'audio/mpeg', fileName: `${anu.result.title}.mp3` }, m, anu.result.title, 'https://i.ibb.co.com/txJrWCZ/images-8.jpg', url)*/
-			let anu = await (await fetch('https://api.siputzx.my.id/api/d/ytmp3?url='+url)).json()
-			if (!anu.error) {
-				anu = anu.data
-				await conn.sendFAudio(m.chat, { [/mp3/g.test(command) ? 'document' : 'audio']: { url: anu.dl }, mimetype: 'audio/mpeg', fileName: `${anu.title}.mp3` }, m, anu.title, 'https://i.ibb.co.com/txJrWCZ/images-8.jpg', url)
-			} else {
-				let anu = await (await fetch('https://api.siputzx.my.id/api/d/ytmp3?url='+url)).json()
-				if (!anu.error) {
-					let anu = await (await fetch('https://api.siputzx.my.id/api/dl/youtube/mp3?url='+url)).json()
-					if (!anu.error) {
-						await conn.sendFAudio(m.chat, { [/mp3/g.test(command) ? 'document' : 'audio']: { url: anu.data }, mimetype: 'audio/mpeg', fileName: `unnamed.mp3` }, m, 'unnamed', 'https://i.ibb.co.com/txJrWCZ/images-8.jpg', url)
-					} else m.reply(anu.error)
-				}
-			}
+			let anu = await (await fetch(`https://fastrestapis.fasturl.cloud/downup/ytdown-v1?url=${url}&format=mp3&quality=128&server=auto`)).json()
+			if (anu.status == 200) {
+				anu = anu.result
+				let txt = `*${anu.title}*\n\n⭔ Author : ${anu.author.name}\n⭔ Duration : ${anu.metadata.duration}\n⭔ Quality : ${anu.quality}`
+				let msg = await conn.sendFile(m.chat, anu.media, anu.title+'.mp3', '', m, false, { mimetype: 'audio/mpeg' })
+				await conn.reply(m.chat, txt, msg)
+			} else throw Error(anu.error)
 		} catch (e) {
 			console.log(e)
 			m.reply(e.message)

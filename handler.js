@@ -812,6 +812,7 @@ export async function handler(chatUpdate) {
 				if (!isAccept)
 					continue
 				m.plugin = name
+				//console.log(m.plugin)
 				if (m.chat in db.data.chats || m.sender in db.data.users) {
 					let chat = db.data.chats[m.chat]
 					let user = db.data.users[m.sender]
